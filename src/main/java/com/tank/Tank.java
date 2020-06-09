@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Tank {
 
+    public Rectangle rect = new Rectangle();
     private int x,y;//定义tank位置坐标
     private Dir dir;//定义tank的方向
     private static final int SPEED = 5;//定义tank每次移动的距离
@@ -22,6 +23,10 @@ public class Tank {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+        rect.x = x;
+        rect.y = y;
+        rect.width = tank_width;
+        rect.height = tank_height;
 
     }
 
@@ -113,12 +118,17 @@ public class Tank {
                 break;
         }
 
+
+
         if(this.group == Group.BAD && random.nextInt(100)>95)
             this.fire();
         if(this.group == Group.BAD&&random.nextInt(100)>95)
             randomDir();
 
         boundsCheck();
+
+        rect.x = x;
+        rect.y = y;
 
     }
 

@@ -13,6 +13,7 @@ public class Bullet {
     private boolean isAlive = true;
     private TankFrame tf;
     private Group group = Group.BAD;
+    private Rectangle rect = new Rectangle();
 
     public Bullet(int x, int y, Dir dir,TankFrame tf,Group group) {
         this.x = x;
@@ -20,6 +21,10 @@ public class Bullet {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+        rect.x = x;
+        rect.y = y;
+        rect.width = bullet_width;
+        rect.height = bullet_height;
     }
 
     public boolean isAlive() {
@@ -78,6 +83,9 @@ public class Bullet {
                 break;
         }
 
+        rect.x = x;
+        rect.y = y;
+
         if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
             isAlive = false;
     }
@@ -86,11 +94,11 @@ public class Bullet {
 
         if(this.group == tank.getGroup()) return ;//是一波的就不碰撞，不做任何操作
 
-        //得到两个对象的方块，完全可以用一个rect记录一个子弹的位置，new出来太多会占用内存
-        Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
-        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.tank_width, Tank.tank_height);
+        //得到两个对象的方块，完全可以用一个rect记录一个子弹的位置，new出来太多会占用内存.rect跟着坦克和子弹走
+//        Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
+//        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.tank_width, Tank.tank_height);
         //是否相交
-        if(rect1.intersects(rect2)){
+        if(rect.intersects(tank.rect)){
             tank.die();
             this.die();
             int eX = x + Tank.tank_width/2 - Explode.explode_width/2;
