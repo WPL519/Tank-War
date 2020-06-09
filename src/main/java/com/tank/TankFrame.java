@@ -13,6 +13,7 @@ public class TankFrame extends Frame {
 //    private static final int SPEED  = 10;//定义每次tank运动的速度
 
     Tank myTank = new Tank(200,200,Dir.DOWN);
+    Bullet b = new Bullet(200,200,Dir.DOWN);
 
     public TankFrame(){
         setSize(800,600);//设置窗口的大小
@@ -36,6 +37,7 @@ public class TankFrame extends Frame {
     public void paint(Graphics g){
         //Tank类要自己控制自己移动，所以自己封装paint方法，并且把这只画笔g交给tank.
         myTank.paint(g);
+        b.paint(g);
 
     }
 
