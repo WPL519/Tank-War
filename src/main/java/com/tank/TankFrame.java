@@ -8,15 +8,15 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-//    int x = 200,y = 200;
-    Dir dir = Dir.DOWN;//定义tank的方向
-//    private static final int SPEED  = 10;//定义每次tank运动的速度
+
+    static final int GAME_WIDTH = 800;
+    static final int GAME_HEIGHT = 600;
 
     Tank myTank = new Tank(200,200,Dir.DOWN);
     Bullet b = new Bullet(200,200,Dir.DOWN);
 
     public TankFrame(){
-        setSize(800,600);//设置窗口的大小
+        setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
         setResizable(false);//设置窗口是否可以改变大小
         setTitle("Tank War");
         setVisible(true);
@@ -27,6 +27,24 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
+    }
+
+    Image offScreenImage = null;
+    //解决对象移动时的闪烁问题（游戏中的双缓冲概念） ，update方法会在paint方法之前调用，系统劫用画笔g，先在内存中画出整张背景图
+    //然后交还给paint方法，画出坦克、子弹对象，画完之后把所有画面直接显示到屏幕上，就解决了闪烁问题。
+
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);//把画笔交还给paint方法
+        g.drawImage(offScreenImage, 0, 0, null);//把内存中的画面一下子画到屏幕上
     }
 
     /**
