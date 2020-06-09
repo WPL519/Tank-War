@@ -84,11 +84,12 @@ public class Bullet {
 
     public void collideWith(Tank tank) {
 
-        if(this.group == tank.getGroup()) return;//不做任何操作
+        if(this.group == tank.getGroup()) return;//是一波的就不碰撞，不做任何操作
 
         //得到两个对象的方块，完全可以用一个rect记录一个子弹的位置，new出来太多会占用内存
         Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
         Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.tank_width, Tank.tank_height);
+        //是否相交
         if(rect1.intersects(rect2)){
             tank.die();
             this.die();

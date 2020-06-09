@@ -20,6 +20,9 @@ public class TankFrame extends Frame {
     Tank myTank = new Tank(200,200,Dir.DOWN,this,Group.GOOD);
     //Bullet b = new Bullet(300,300,Dir.DOWN,this);
 
+    Explode explode = new Explode(500,200,this);
+
+
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
@@ -69,6 +72,8 @@ public class TankFrame extends Frame {
         g.drawString("子弹的数量"+bullets.size(),10,50);
         g.drawString("敌人的数量"+tanks.size(),10,70);
         g.setColor(color);
+
+        explode.paint(g);
 
         myTank.paint(g);
         for(int i = 0;i < bullets.size();i++){
