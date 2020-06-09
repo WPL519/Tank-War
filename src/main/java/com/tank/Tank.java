@@ -113,8 +113,24 @@ public class Tank {
                 break;
         }
 
-        if(random.nextInt(10)>8) this.fire();
+        if(this.group == Group.BAD && random.nextInt(100)>95)
+            this.fire();
+        if(this.group == Group.BAD&&random.nextInt(100)>95)
+            randomDir();
 
+        boundsCheck();
+
+    }
+
+    private void boundsCheck() {
+        if(this.x < 2)  x = 2;
+        if(this.y < 28) y = 28;
+        if(this.x > TankFrame.GAME_WIDTH-tank_width - 2) x = TankFrame.GAME_WIDTH - tank_width - 2;
+        if(this.y > TankFrame.GAME_HEIGHT-tank_height - 2) y = TankFrame.GAME_HEIGHT - tank_height - 2;
+    }
+
+    private void randomDir() {
+        this.dir = Dir.values()[random.nextInt(4)];
     }
 
     public void fire() {

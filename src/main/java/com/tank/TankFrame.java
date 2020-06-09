@@ -19,9 +19,9 @@ public class TankFrame extends Frame {
     List<Explode> explodes = new ArrayList<>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this,Group.GOOD);
-    //Bullet b = new Bullet(300,300,Dir.DOWN,this);
 
-//    Explode explode = new Explode(500,200,this);
+
+
 
 
 
@@ -75,14 +75,11 @@ public class TankFrame extends Frame {
         g.drawString("爆炸的数量"+explodes.size(),10,90);
         g.setColor(color);
 
-
-
         myTank.paint(g);
+
         for(int i = 0;i < bullets.size();i++){
             bullets.get(i).paint(g);
         }
-
-
         //也可以使用这种方式进行删除，不会出现异常
 //        for(Iterator<Bullet> it = bullets.iterator();it.hasNext();){
 //            Bullet b = it.next();
@@ -90,6 +87,7 @@ public class TankFrame extends Frame {
 //                it.remove();
 //            }
 //        }
+
         for(int i = 0;i < tanks.size();i++){
             tanks.get(i).paint(g);
         }
@@ -102,10 +100,8 @@ public class TankFrame extends Frame {
         for(int i = 0;i < bullets.size();i++){
             for(int j = 0;j < tanks.size();j++){
                 bullets.get(i).collideWith(tanks.get(j));
-
             }
         }
-
 
 
 
