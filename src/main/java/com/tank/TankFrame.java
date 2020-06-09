@@ -12,8 +12,8 @@ public class TankFrame extends Frame {
     static final int GAME_WIDTH = 800;
     static final int GAME_HEIGHT = 600;
 
-    Tank myTank = new Tank(200,200,Dir.DOWN);
-    Bullet b = new Bullet(200,200,Dir.DOWN);
+    Tank myTank = new Tank(200,200,Dir.DOWN,this);
+    Bullet b = new Bullet(300,300,Dir.DOWN);
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
@@ -119,12 +119,18 @@ public class TankFrame extends Frame {
 //                    y+=10;
                     bD = false;
                     break;
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
+                    break;
+
                 default:
                     break;
             }
 
             setMainTankDir();
         }
+
+
 
         private void setMainTankDir() {
 
