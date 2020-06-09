@@ -8,9 +8,11 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-    int x = 200,y = 200;
+//    int x = 200,y = 200;
     Dir dir = Dir.DOWN;//定义tank的方向
-    private static final int SPEED  = 10;//定义每次tank运动的速度
+//    private static final int SPEED  = 10;//定义每次tank运动的速度
+
+    Tank myTank = new Tank(200,200,Dir.DOWN);
 
     public TankFrame(){
         setSize(800,600);//设置窗口的大小
@@ -24,8 +26,6 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
-
-        
     }
 
     /**
@@ -34,25 +34,8 @@ public class TankFrame extends Frame {
      */
     @Override
     public void paint(Graphics g){
-        g.fillRect(x,y,50,50);
-//        x+=10;
-//        y+=10;
-        switch (dir){
-            case LEFT:
-                x -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
-            default:
-                break;
-        }
+        //Tank类要自己控制自己移动，所以自己封装paint方法，并且把这只画笔g交给tank.
+        myTank.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -61,7 +44,6 @@ public class TankFrame extends Frame {
         boolean bU = false;
         boolean bR = false;
         boolean bD = false;
-
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -123,10 +105,10 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if(bL) dir = Dir.LEFT;
-            if(bR) dir = Dir.RIGHT;
-            if(bU) dir = Dir.UP;
-            if(bD) dir = Dir.DOWN;
+            if(bL) myTank.setDir(Dir.LEFT);
+            if(bR) myTank.setDir(Dir.RIGHT);
+            if(bU) myTank.setDir(Dir.UP);
+            if(bD) myTank.setDir(Dir.DOWN);
         }
     }
 
