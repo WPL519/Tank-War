@@ -18,6 +18,7 @@ public class TankFrame extends Frame {
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
     //Bullet b = new Bullet(300,300,Dir.DOWN,this);
+    Tank enemyTank = new Tank(400,500,Dir.UP,this);
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
@@ -61,7 +62,12 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.white);
         g.drawString("子弹的数量"+bullets.size(),10,50);
+        g.setColor(color);
+
         myTank.paint(g);
+
+        enemyTank.paint(g);
+
         for(int i = 0;i < bullets.size();i++){
             bullets.get(i).paint(g);
         }
@@ -83,6 +89,11 @@ public class TankFrame extends Frame {
         boolean bR = false;
         boolean bD = false;
 
+        boolean ebL = false;
+        boolean ebU = false;
+        boolean ebR = false;
+        boolean ebD = false;
+
         //记录按键来设置tank的方向
         @Override
         public void keyPressed(KeyEvent e) {
@@ -90,27 +101,35 @@ public class TankFrame extends Frame {
             int key = e.getKeyCode();
             switch (key){
                 case KeyEvent.VK_LEFT:
-//                    x-=10;
                     bL = true;
-
                     break;
                 case KeyEvent.VK_RIGHT:
-//                    x+=10;
                     bR = true;
                     break;
                 case KeyEvent.VK_UP:
-//                    y-=10;
                     bU = true;
                     break;
                 case KeyEvent.VK_DOWN:
-//                    y+=10;
                     bD = true;
+                    break;
+                case KeyEvent.VK_J:
+                    ebL = true;
+                    break;
+                case KeyEvent.VK_L:
+                    ebR = true;
+                    break;
+                case KeyEvent.VK_I:
+                    ebU = true;
+                    break;
+                case KeyEvent.VK_K:
+                    ebD = true;
                     break;
                 default:
                     break;
             }
 
             setMainTankDir();
+            setEmenyTankDir();
 
         }
 
@@ -120,24 +139,34 @@ public class TankFrame extends Frame {
             int key = e.getKeyCode();
             switch (key){
                 case KeyEvent.VK_LEFT:
-//                    x-=10;
                     bL = false;
-
                     break;
                 case KeyEvent.VK_RIGHT:
-//                    x+=10;
                     bR = false;
                     break;
                 case KeyEvent.VK_UP:
-//                    y-=10;
                     bU = false;
                     break;
                 case KeyEvent.VK_DOWN:
-//                    y+=10;
                     bD = false;
+                    break;
+                case KeyEvent.VK_J:
+                    ebL = false;
+                    break;
+                case KeyEvent.VK_L:
+                    ebR = false;
+                    break;
+                case KeyEvent.VK_I:
+                    ebU = false;
+                    break;
+                case KeyEvent.VK_K:
+                    ebD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
                     myTank.fire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
+                    break;
+                case KeyEvent.VK_0:
+                    enemyTank.fire();
                     break;
 
                 default:
@@ -145,6 +174,7 @@ public class TankFrame extends Frame {
             }
 
             setMainTankDir();
+            setEmenyTankDir();
         }
 
 
@@ -160,10 +190,22 @@ public class TankFrame extends Frame {
                 if(bU) myTank.setDir(Dir.UP);
                 if(bD) myTank.setDir(Dir.DOWN);
             }
-
-
-
         }
+
+        private void setEmenyTankDir() {
+
+            if(!ebL && !ebR && !ebU && !ebD){//如果没有按键按下来，tank的状态是为静止
+                enemyTank.setMoving(false);
+            }else {//有按键按下来，tank的状态为运动，并且记录tank的方向
+                enemyTank.setMoving(true);
+                if(ebL) enemyTank.setDir(Dir.LEFT);
+                if(ebR) enemyTank.setDir(Dir.RIGHT);
+                if(ebU) enemyTank.setDir(Dir.UP);
+                if(ebD) enemyTank.setDir(Dir.DOWN);
+            }
+        }
+
+
     }
 
 
