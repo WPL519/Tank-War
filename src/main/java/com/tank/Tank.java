@@ -9,6 +9,9 @@ public class Tank {
     private static final int SPEED = 5;//定义tank每次移动的距离
     private boolean moving  = false;//设定tank的状态
     private TankFrame tf ;//引用TankFrame，使自己创建出来的子弹对象能够绘制出来
+    public static final int tank_width = ResourceMgr.tankD.getWidth();
+    public static final int tank_height = ResourceMgr.tankD.getHeight();
+    private boolean isAlive = true;
 
     public Tank(int x, int y, Dir dir,TankFrame tf) {
         this.x = x;
@@ -51,7 +54,11 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        Color color = g.getColor();
+        if(!isAlive){
+            tf.getTanks().remove(this);
+        }
+
+
         //用图片代替tank
         switch (dir){
             case UP:
@@ -96,7 +103,13 @@ public class Tank {
     }
 
     public void fire() {
-        tf.bullets.add(new Bullet(this.x+20,this.y+20,this.dir,this.tf));
+        int bX = this.x + tank_width/2 - Bullet.bullet_width/2;
+        int bY = this.y + tank_height/2 - Bullet.bullet_height/2;
+        tf.bullets.add(new Bullet(bX,bY,this.dir,this.tf));
 
+    }
+
+    public void die() {
+        this.isAlive = false;
     }
 }

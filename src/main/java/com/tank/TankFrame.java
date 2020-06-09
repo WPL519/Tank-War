@@ -15,10 +15,11 @@ public class TankFrame extends Frame {
     static final int GAME_WIDTH = 800;
     static final int GAME_HEIGHT = 600;
     List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
+    List<Tank> tanks = new ArrayList<>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
     //Bullet b = new Bullet(300,300,Dir.DOWN,this);
-    Tank enemyTank = new Tank(400,500,Dir.UP,this);
+
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
@@ -32,6 +33,10 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
+    }
+
+    public List<Tank> getTanks() {
+        return tanks;
     }
 
     Image offScreenImage = null;
@@ -62,15 +67,15 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.white);
         g.drawString("子弹的数量"+bullets.size(),10,50);
+        g.drawString("敌人的数量"+tanks.size(),10,70);
         g.setColor(color);
 
         myTank.paint(g);
-
-        enemyTank.paint(g);
-
         for(int i = 0;i < bullets.size();i++){
             bullets.get(i).paint(g);
         }
+
+
         //也可以使用这种方式进行删除，不会出现异常
 //        for(Iterator<Bullet> it = bullets.iterator();it.hasNext();){
 //            Bullet b = it.next();
@@ -78,6 +83,17 @@ public class TankFrame extends Frame {
 //                it.remove();
 //            }
 //        }
+        for(int i = 0;i < tanks.size();i++){
+            tanks.get(i).paint(g);
+        }
+        //每个子弹与坦克进行碰撞检测
+        for(int i = 0;i < bullets.size();i++){
+            for(int j = 0;j < tanks.size();j++){
+                bullets.get(i).collideWith(tanks.get(j));
+            }
+        }
+
+
 
 
     }
@@ -88,11 +104,6 @@ public class TankFrame extends Frame {
         boolean bU = false;
         boolean bR = false;
         boolean bD = false;
-
-        boolean ebL = false;
-        boolean ebU = false;
-        boolean ebR = false;
-        boolean ebD = false;
 
         //记录按键来设置tank的方向
         @Override
@@ -112,24 +123,24 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = true;
                     break;
-                case KeyEvent.VK_J:
-                    ebL = true;
-                    break;
-                case KeyEvent.VK_L:
-                    ebR = true;
-                    break;
-                case KeyEvent.VK_I:
-                    ebU = true;
-                    break;
-                case KeyEvent.VK_K:
-                    ebD = true;
-                    break;
+//                case KeyEvent.VK_J:
+//                    ebL = true;
+//                    break;
+//                case KeyEvent.VK_L:
+//                    ebR = true;
+//                    break;
+//                case KeyEvent.VK_I:
+//                    ebU = true;
+//                    break;
+//                case KeyEvent.VK_K:
+//                    ebD = true;
+//                    break;
                 default:
                     break;
             }
 
             setMainTankDir();
-            setEmenyTankDir();
+//            setEmenyTankDir();
 
         }
 
@@ -150,31 +161,31 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = false;
                     break;
-                case KeyEvent.VK_J:
-                    ebL = false;
-                    break;
-                case KeyEvent.VK_L:
-                    ebR = false;
-                    break;
-                case KeyEvent.VK_I:
-                    ebU = false;
-                    break;
-                case KeyEvent.VK_K:
-                    ebD = false;
-                    break;
+//                case KeyEvent.VK_J:
+//                    ebL = false;
+//                    break;
+//                case KeyEvent.VK_L:
+//                    ebR = false;
+//                    break;
+//                case KeyEvent.VK_I:
+//                    ebU = false;
+//                    break;
+//                case KeyEvent.VK_K:
+//                    ebD = false;
+//                    break;
                 case KeyEvent.VK_CONTROL:
                     myTank.fire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
                     break;
-                case KeyEvent.VK_0:
-                    enemyTank.fire();
-                    break;
+//                case KeyEvent.VK_0:
+//                    enemyTank.fire();
+//                    break;
 
                 default:
                     break;
             }
 
             setMainTankDir();
-            setEmenyTankDir();
+//            setEmenyTankDir();
         }
 
 
@@ -192,18 +203,18 @@ public class TankFrame extends Frame {
             }
         }
 
-        private void setEmenyTankDir() {
-
-            if(!ebL && !ebR && !ebU && !ebD){//如果没有按键按下来，tank的状态是为静止
-                enemyTank.setMoving(false);
-            }else {//有按键按下来，tank的状态为运动，并且记录tank的方向
-                enemyTank.setMoving(true);
-                if(ebL) enemyTank.setDir(Dir.LEFT);
-                if(ebR) enemyTank.setDir(Dir.RIGHT);
-                if(ebU) enemyTank.setDir(Dir.UP);
-                if(ebD) enemyTank.setDir(Dir.DOWN);
-            }
-        }
+//        private void setEmenyTankDir() {
+//
+//            if(!ebL && !ebR && !ebU && !ebD){//如果没有按键按下来，tank的状态是为静止
+//                enemyTank.setMoving(false);
+//            }else {//有按键按下来，tank的状态为运动，并且记录tank的方向
+//                enemyTank.setMoving(true);
+//                if(ebL) enemyTank.setDir(Dir.LEFT);
+//                if(ebR) enemyTank.setDir(Dir.RIGHT);
+//                if(ebU) enemyTank.setDir(Dir.UP);
+//                if(ebD) enemyTank.setDir(Dir.DOWN);
+//            }
+//        }
 
 
     }

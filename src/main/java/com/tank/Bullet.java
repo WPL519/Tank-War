@@ -1,11 +1,13 @@
 package com.tank;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TagName;
+
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 5;
-    private static final int width = 15;
-    private static final int height = 15;
+    private static final int SPEED = 10;
+    public static final int bullet_width = ResourceMgr.bulletD.getWidth();
+    public static final int bullet_height = ResourceMgr.bulletD.getHeight();
     private int x,y;
     private Dir dir;
     private boolean isAlive = true;
@@ -27,9 +29,6 @@ public class Bullet {
             tf.bullets.remove(this);//使用foreach遍历会出现：java.util.ConcurrentModificationException。因为在使用foreach时候是使用迭代器进行遍历的，所以删除时候只允许迭代器删除，不允许其他方式的删除
         }
 
-
-        Color color = g.getColor();
-        g.setColor(Color.RED);
         switch (dir){
             case UP:
                 g.drawImage(ResourceMgr.bulletU,x,y,null);
@@ -52,7 +51,6 @@ public class Bullet {
 
     private void move() {
 
-
         switch (dir){
             case LEFT:
                 x -= SPEED;
@@ -72,5 +70,21 @@ public class Bullet {
 
         if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
             isAlive = false;
+    }
+
+    public void collideWith(Tank tank) {
+        //得到两个对象的方块
+        Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
+        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.tank_width, Tank.tank_height);
+        if(rect1.intersects(rect2)){
+            tank.die();
+            this.die();
+            
+        }
+        
+    }
+
+    private void die() {
+        this.isAlive = false;
     }
 }
