@@ -36,6 +36,7 @@ public class TankFrame extends Frame {
     public void paint(Graphics g){
         //Tank类要自己控制自己移动，所以自己封装paint方法，并且把这只画笔g交给tank.
         myTank.paint(g);
+
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -45,6 +46,7 @@ public class TankFrame extends Frame {
         boolean bR = false;
         boolean bD = false;
 
+        //记录按键来设置tank的方向
         @Override
         public void keyPressed(KeyEvent e) {
             //System.out.println("key pressed");
@@ -105,10 +107,19 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if(bL) myTank.setDir(Dir.LEFT);
-            if(bR) myTank.setDir(Dir.RIGHT);
-            if(bU) myTank.setDir(Dir.UP);
-            if(bD) myTank.setDir(Dir.DOWN);
+
+            if(!bL && !bR && !bU && !bD){//如果没有按键按下来，tank的状态是为静止
+                myTank.setMoving(false);
+            }else {//有按键按下来，tank的状态为运动，并且记录tank的方向
+                myTank.setMoving(true);
+                if(bL) myTank.setDir(Dir.LEFT);
+                if(bR) myTank.setDir(Dir.RIGHT);
+                if(bU) myTank.setDir(Dir.UP);
+                if(bD) myTank.setDir(Dir.DOWN);
+            }
+
+
+
         }
     }
 
