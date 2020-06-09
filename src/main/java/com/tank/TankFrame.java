@@ -5,12 +5,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
 
 
     static final int GAME_WIDTH = 800;
     static final int GAME_HEIGHT = 600;
+    List<Bullet> bullets = new ArrayList<>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
     Bullet b = new Bullet(300,300,Dir.DOWN);
@@ -55,7 +58,10 @@ public class TankFrame extends Frame {
     public void paint(Graphics g){
         //Tank类要自己控制自己移动，所以自己封装paint方法，并且把这只画笔g交给tank.
         myTank.paint(g);
-        b.paint(g);
+        for(Bullet b : bullets){
+            b.paint(g);
+        }
+
 
     }
 
