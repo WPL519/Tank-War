@@ -1,6 +1,6 @@
 package com.tank;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TagName;
+//import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TagName;
 
 import java.awt.*;
 
@@ -84,7 +84,7 @@ public class Bullet {
 
     public void collideWith(Tank tank) {
 
-        if(this.group == tank.getGroup()) return;//是一波的就不碰撞，不做任何操作
+        if(this.group == tank.getGroup()) return ;//是一波的就不碰撞，不做任何操作
 
         //得到两个对象的方块，完全可以用一个rect记录一个子弹的位置，new出来太多会占用内存
         Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
@@ -93,8 +93,10 @@ public class Bullet {
         if(rect1.intersects(rect2)){
             tank.die();
             this.die();
-            
+            tf.explodes.add(new Explode(tank.getX(),tank.getY(),tf));
+
         }
+
         
     }
 

@@ -12,15 +12,16 @@ import java.util.List;
 public class TankFrame extends Frame {
 
 
-    static final int GAME_WIDTH = 800;
-    static final int GAME_HEIGHT = 600;
+    static final int GAME_WIDTH = 1080;
+    static final int GAME_HEIGHT = 960;
     List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
     List<Tank> tanks = new ArrayList<>();
+    List<Explode> explodes = new ArrayList<>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this,Group.GOOD);
     //Bullet b = new Bullet(300,300,Dir.DOWN,this);
 
-    Explode explode = new Explode(500,200,this);
+//    Explode explode = new Explode(500,200,this);
 
 
 
@@ -71,9 +72,10 @@ public class TankFrame extends Frame {
         g.setColor(Color.white);
         g.drawString("子弹的数量"+bullets.size(),10,50);
         g.drawString("敌人的数量"+tanks.size(),10,70);
+        g.drawString("爆炸的数量"+explodes.size(),10,90);
         g.setColor(color);
 
-        explode.paint(g);
+
 
         myTank.paint(g);
         for(int i = 0;i < bullets.size();i++){
@@ -91,10 +93,16 @@ public class TankFrame extends Frame {
         for(int i = 0;i < tanks.size();i++){
             tanks.get(i).paint(g);
         }
+
+        for(int i = 0;i < explodes.size();i++){
+            explodes.get(i).paint(g);
+        }
+
         //每个子弹与坦克进行碰撞检测
         for(int i = 0;i < bullets.size();i++){
             for(int j = 0;j < tanks.size();j++){
                 bullets.get(i).collideWith(tanks.get(j));
+
             }
         }
 
