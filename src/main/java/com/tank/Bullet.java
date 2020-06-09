@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Bullet {
     private static final int SPEED = 5;
-    private static final int width = 10;
-    private static final int height = 10;
+    private static final int width = 15;
+    private static final int height = 15;
     private int x,y;
     private Dir dir;
     private boolean isAlive = true;
@@ -30,8 +30,22 @@ public class Bullet {
 
         Color color = g.getColor();
         g.setColor(Color.RED);
-        g.fillOval(x,y,width,height);
-        g.setColor(color);
+        switch (dir){
+            case UP:
+                g.drawImage(ResourceMgr.bulletU,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.bulletD,x,y,null);
+                break;
+            case LEFT:
+                g.drawImage(ResourceMgr.bulletL,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.bulletR,x,y,null);
+                break;
+            default:
+                break;
+        }
         //抽象一个新的方法来控制tank的移动
         move();
     }
