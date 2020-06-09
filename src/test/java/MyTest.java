@@ -1,3 +1,4 @@
+import com.tank.PropertyMgr;
 import org.junit.Test;
 
 
@@ -19,6 +20,12 @@ public class MyTest {
         BufferedImage i2 = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/tankL.gif"));
         assertNotNull(i2);
     }
+
+    @Test
+    public void test02(){
+        System.out.println(PropertyMgr.getValue("initTankCount"));
+    }
+
 
 
 }

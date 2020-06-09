@@ -8,7 +8,7 @@ public class Tank {
     public Rectangle rect = new Rectangle();
     private int x,y;//定义tank位置坐标
     private Dir dir;//定义tank的方向
-    private static final int SPEED = 5;//定义tank每次移动的距离
+    private static final int SPEED = Integer.parseInt(PropertyMgr.getValue("TankSpeed"));//定义tank每次移动的距离
     private boolean moving  = true;//设定tank的状态
     private TankFrame tf ;//引用TankFrame，使自己创建出来的子弹对象能够绘制出来
     public static final int tank_width = ResourceMgr.tankD.getWidth();
