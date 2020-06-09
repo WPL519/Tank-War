@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TankFrame extends Frame {
@@ -13,10 +14,10 @@ public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 800;
     static final int GAME_HEIGHT = 600;
-    List<Bullet> bullets = new ArrayList<>();
+    List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
-    Bullet b = new Bullet(300,300,Dir.DOWN);
+    //Bullet b = new Bullet(300,300,Dir.DOWN,this);
 
     public TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);//设置窗口的大小
@@ -57,10 +58,20 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g){
         //Tank类要自己控制自己移动，所以自己封装paint方法，并且把这只画笔g交给tank.
+        Color color = g.getColor();
+        g.setColor(Color.white);
+        g.drawString("子弹的数量"+bullets.size(),10,50);
         myTank.paint(g);
-        for(Bullet b : bullets){
-            b.paint(g);
+        for(int i = 0;i < bullets.size();i++){
+            bullets.get(i).paint(g);
         }
+        //也可以使用这种方式进行删除，不会出现异常
+//        for(Iterator<Bullet> it = bullets.iterator();it.hasNext();){
+//            Bullet b = it.next();
+//            if(!b.isAlive()){
+//                it.remove();
+//            }
+//        }
 
 
     }
