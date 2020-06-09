@@ -25,7 +25,7 @@ public class TankFrame extends Frame {
             }
         });
 
-        //hhhsflkasjdl;fjasl;jfl
+        
     }
 
     /**
