@@ -17,7 +17,7 @@ public class TankFrame extends Frame {
     List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
     List<Tank> tanks = new ArrayList<>();
 
-    Tank myTank = new Tank(200,200,Dir.DOWN,this);
+    Tank myTank = new Tank(200,200,Dir.DOWN,this,Group.GOOD);
     //Bullet b = new Bullet(300,300,Dir.DOWN,this);
 
 

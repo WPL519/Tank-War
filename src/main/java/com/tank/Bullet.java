@@ -12,16 +12,26 @@ public class Bullet {
     private Dir dir;
     private boolean isAlive = true;
     private TankFrame tf;
+    private Group group = Group.BAD;
 
-    public Bullet(int x, int y, Dir dir,TankFrame tf) {
+    public Bullet(int x, int y, Dir dir,TankFrame tf,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.group = group;
     }
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void paint(Graphics g) {
@@ -73,7 +83,10 @@ public class Bullet {
     }
 
     public void collideWith(Tank tank) {
-        //得到两个对象的方块
+
+        if(this.group == tank.getGroup()) return;//不做任何操作
+
+        //得到两个对象的方块，完全可以用一个rect记录一个子弹的位置，new出来太多会占用内存
         Rectangle rect1 = new Rectangle(this.x,this.y,bullet_width,bullet_height);
         Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.tank_width, Tank.tank_height);
         if(rect1.intersects(rect2)){
