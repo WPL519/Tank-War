@@ -5,7 +5,7 @@ package com.tank;
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 10;
+    private static final int SPEED = Integer.parseInt(PropertyMgr.getValue("BulletSpeed"));
     public static final int bullet_width = ResourceMgr.bulletD.getWidth();
     public static final int bullet_height = ResourceMgr.bulletD.getHeight();
     private int x,y;

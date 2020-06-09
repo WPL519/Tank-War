@@ -11,14 +11,15 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-
-    static final int GAME_WIDTH = 1080;
-    static final int GAME_HEIGHT = 960;
+    final int initMyTankXLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankXLoc"));
+    final int initMyTankYLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankYLoc"));
+    static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.getValue("GameWidth"));
+    static final int GAME_HEIGHT = Integer.parseInt(PropertyMgr.getValue("GameHight"));
     List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
     List<Tank> tanks = new ArrayList<>();
     List<Explode> explodes = new ArrayList<>();
 
-    Tank myTank = new Tank(200,200,Dir.DOWN,this,Group.GOOD);
+    Tank myTank = new Tank(initMyTankXLoc,initMyTankYLoc,Dir.DOWN,this,Group.GOOD);
 
 
 
