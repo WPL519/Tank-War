@@ -1,8 +1,9 @@
 package com.tank;
 
-import com.tank.com.tank.attackpattern.ContinuousAttack;
-import com.tank.com.tank.attackpattern.RoundAttack;
-import com.tank.com.tank.attackpattern.SingleAttack;
+import com.tank.attackpattern.AttackStrategy;
+import com.tank.attackpattern.ContinuousAttack;
+import com.tank.attackpattern.RoundAttackStrategy;
+import com.tank.attackpattern.DefaultAttackStrategy;
 
 import java.awt.*;
 import java.util.Random;
@@ -20,9 +21,9 @@ public class Tank {
     private boolean isAlive = true;
     private Random random = new Random();
     private Group group = Group.BAD;
-    private SingleAttack singleAttack = new SingleAttack();
-    private ContinuousAttack continuousAttack = new ContinuousAttack();
-    private RoundAttack roundAttack = new RoundAttack();
+
+    //如果传入到fire方法里面，每次调用，都需要new，因此，应该把每个攻击策略都改写成单例模式
+    AttackStrategy as;
 
     public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
         this.x = x;
@@ -34,6 +35,20 @@ public class Tank {
         rect.y = y;
         rect.width = tank_width;
         rect.height = tank_height;
+
+        if(this.group == Group.GOOD){
+            try {
+                as = (RoundAttackStrategy)Class.forName(PropertyMgr.getValue("GoodTankAS")).newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if(this.group == Group.BAD){
+            try {
+                as = (DefaultAttackStrategy)Class.forName(PropertyMgr.getValue("BadTankAS")).newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -132,7 +147,7 @@ public class Tank {
 
 
         if(this.group == Group.BAD && random.nextInt(100)>95)
-            this.singleFire();
+            this.fire();
         if(this.group == Group.BAD&&random.nextInt(100)>95)
             randomDir();
 
@@ -158,15 +173,8 @@ public class Tank {
         this.isAlive = false;
     }
 
-    public void singleFire() {
-        singleAttack.fire(this);
+    public void fire() {
+        as.fire(this);
     }
 
-    public void ContinuousFire() {
-        continuousAttack.fire(this);
-    }
-
-    public void RoundFire(){
-        roundAttack.fire(this);
-    }
 }

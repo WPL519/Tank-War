@@ -1,9 +1,9 @@
-package com.tank.com.tank.attackpattern;
+package com.tank.attackpattern;
 
 import com.tank.Bullet;
 import com.tank.Tank;
 
-public class ContinuousAttack implements AttackPattern<Tank>{
+public class ContinuousAttack implements AttackStrategy<Tank> {
     @Override
     public void fire(Tank tank) {
         int bX_1 = tank.getX() + Tank.tank_width/2 - Bullet.bullet_width/2;
@@ -24,7 +24,7 @@ public class ContinuousAttack implements AttackPattern<Tank>{
             default:
                 break;
         }
-        tank.getTf().getBullets().add(new Bullet(bX_1,bY_1,tank.getDir(),tank.getTf(),tank.getGroup()));
-        tank.getTf().getBullets().add(new Bullet(bX_2,bY_2,tank.getDir(),tank.getTf(),tank.getGroup()));
+        new Bullet(bX_1,bY_1,tank.getDir(),tank.getTf(),tank.getGroup());
+        new Bullet(bX_2,bY_2,tank.getDir(),tank.getTf(),tank.getGroup());
     }
 }

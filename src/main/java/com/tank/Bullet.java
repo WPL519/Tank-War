@@ -25,6 +25,8 @@ public class Bullet {
         rect.y = y;
         rect.width = bullet_width;
         rect.height = bullet_height;
+
+        tf.getBullets().add(this);
     }
 
     public boolean isAlive() {

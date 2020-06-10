@@ -170,15 +170,12 @@ public class TankFrame extends Frame {
                     break;
 
 
-                case KeyEvent.VK_1:
-                    myTank.singleFire();
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();
                     break;
-                case KeyEvent.VK_2:
-                    myTank.ContinuousFire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
-                    break;
-                case KeyEvent.VK_3:
-                    myTank.RoundFire();
-                    break;
+                //此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
+
+
 
 
                 default:
