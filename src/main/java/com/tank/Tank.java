@@ -1,5 +1,9 @@
 package com.tank;
 
+import com.tank.com.tank.attackpattern.ContinuousAttack;
+import com.tank.com.tank.attackpattern.RoundAttack;
+import com.tank.com.tank.attackpattern.SingleAttack;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -16,6 +20,9 @@ public class Tank {
     private boolean isAlive = true;
     private Random random = new Random();
     private Group group = Group.BAD;
+    private SingleAttack singleAttack = new SingleAttack();
+    private ContinuousAttack continuousAttack = new ContinuousAttack();
+    private RoundAttack roundAttack = new RoundAttack();
 
     public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
         this.x = x;
@@ -28,6 +35,10 @@ public class Tank {
         rect.width = tank_width;
         rect.height = tank_height;
 
+    }
+
+    public TankFrame getTf() {
+        return tf;
     }
 
     public Group getGroup() {
@@ -121,7 +132,7 @@ public class Tank {
 
 
         if(this.group == Group.BAD && random.nextInt(100)>95)
-            this.fire();
+            this.singleFire();
         if(this.group == Group.BAD&&random.nextInt(100)>95)
             randomDir();
 
@@ -143,14 +154,19 @@ public class Tank {
         this.dir = Dir.values()[random.nextInt(4)];
     }
 
-    public void fire() {
-        int bX = this.x + tank_width/2 - Bullet.bullet_width/2;
-        int bY = this.y + tank_height/2 - Bullet.bullet_height/2;
-        tf.bullets.add(new Bullet(bX,bY,this.dir,this.tf,this.group));
-
-    }
-
     public void die() {
         this.isAlive = false;
+    }
+
+    public void singleFire() {
+        singleAttack.fire(this);
+    }
+
+    public void ContinuousFire() {
+        continuousAttack.fire(this);
+    }
+
+    public void RoundFire(){
+        roundAttack.fire(this);
     }
 }

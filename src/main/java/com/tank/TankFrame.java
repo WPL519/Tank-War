@@ -40,6 +40,14 @@ public class TankFrame extends Frame {
         });
     }
 
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public List<Explode> getExplodes() {
+        return explodes;
+    }
+
     public List<Tank> getTanks() {
         return tanks;
     }
@@ -118,7 +126,7 @@ public class TankFrame extends Frame {
         //记录按键来设置tank的方向
         @Override
         public void keyPressed(KeyEvent e) {
-            //System.out.println("key pressed");
+
             int key = e.getKeyCode();
             switch (key){
                 case KeyEvent.VK_LEFT:
@@ -133,30 +141,19 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = true;
                     break;
-//                case KeyEvent.VK_J:
-//                    ebL = true;
-//                    break;
-//                case KeyEvent.VK_L:
-//                    ebR = true;
-//                    break;
-//                case KeyEvent.VK_I:
-//                    ebU = true;
-//                    break;
-//                case KeyEvent.VK_K:
-//                    ebD = true;
-//                    break;
+
                 default:
                     break;
             }
 
             setMainTankDir();
-//            setEmenyTankDir();
+
 
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            //System.out.println("key realeased");
+
             int key = e.getKeyCode();
             switch (key){
                 case KeyEvent.VK_LEFT:
@@ -171,31 +168,25 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = false;
                     break;
-//                case KeyEvent.VK_J:
-//                    ebL = false;
-//                    break;
-//                case KeyEvent.VK_L:
-//                    ebR = false;
-//                    break;
-//                case KeyEvent.VK_I:
-//                    ebU = false;
-//                    break;
-//                case KeyEvent.VK_K:
-//                    ebD = false;
-//                    break;
-                case KeyEvent.VK_CONTROL:
-                    myTank.fire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
+
+
+                case KeyEvent.VK_1:
+                    myTank.singleFire();
                     break;
-//                case KeyEvent.VK_0:
-//                    enemyTank.fire();
-//                    break;
+                case KeyEvent.VK_2:
+                    myTank.ContinuousFire();//此处的fire（）方法不应该有返回对象，此时应该去看具体的坦克内部的fire策略去进行绘制
+                    break;
+                case KeyEvent.VK_3:
+                    myTank.RoundFire();
+                    break;
+
 
                 default:
                     break;
             }
 
             setMainTankDir();
-//            setEmenyTankDir();
+
         }
 
 
@@ -213,18 +204,7 @@ public class TankFrame extends Frame {
             }
         }
 
-//        private void setEmenyTankDir() {
-//
-//            if(!ebL && !ebR && !ebU && !ebD){//如果没有按键按下来，tank的状态是为静止
-//                enemyTank.setMoving(false);
-//            }else {//有按键按下来，tank的状态为运动，并且记录tank的方向
-//                enemyTank.setMoving(true);
-//                if(ebL) enemyTank.setDir(Dir.LEFT);
-//                if(ebR) enemyTank.setDir(Dir.RIGHT);
-//                if(ebU) enemyTank.setDir(Dir.UP);
-//                if(ebD) enemyTank.setDir(Dir.DOWN);
-//            }
-//        }
+
 
 
     }
