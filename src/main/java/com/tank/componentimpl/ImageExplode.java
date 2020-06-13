@@ -1,8 +1,13 @@
-package com.tank;
+package com.tank.componentimpl;
+
+import com.tank.Audio;
+import com.tank.ResourceMgr;
+import com.tank.TankFrame;
+import com.tank.abstractcomonent.BaseExplode;
 
 import java.awt.*;
 
-public class Explode {
+public class ImageExplode extends BaseExplode {
 
     public static final int explode_width = ResourceMgr.explodes[0].getWidth();
     public static final int explode_height = ResourceMgr.explodes[0].getHeight();
@@ -13,7 +18,7 @@ public class Explode {
     private int step = 0;
 
 
-    public Explode(int x, int y,  TankFrame tf) {
+    public ImageExplode(int x, int y,  TankFrame tf) {
         this.x = x;
         this.y = y;
         this.tf = tf;
@@ -34,7 +39,5 @@ public class Explode {
             tf.explodes.remove(this);
 
     }
-
-
 
 }

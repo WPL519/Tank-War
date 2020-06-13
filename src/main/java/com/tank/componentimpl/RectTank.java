@@ -1,23 +1,24 @@
-package com.tank;
+package com.tank.componentimpl;
 
-import com.tank.attackpattern.AttackStrategy;
-import com.tank.attackpattern.ContinuousAttack;
-import com.tank.attackpattern.RoundAttackStrategy;
-import com.tank.attackpattern.DefaultAttackStrategy;
+import com.tank.*;
+import com.tank.abstractcomonent.BaseTank;
+import com.tank.attackstrategy.AttackStrategy;
+import com.tank.attackstrategy.ContinuousAttack;
+import com.tank.attackstrategy.DefaultAttackStrategy;
+import com.tank.attackstrategy.RoundAttackStrategy;
 
 import java.awt.*;
 import java.util.Random;
 
-public class Tank {
+public class RectTank extends BaseTank {
 
-    public Rectangle rect = new Rectangle();
     private int x,y;//定义tank位置坐标
     private Dir dir;//定义tank的方向
     private static final int SPEED = Integer.parseInt(PropertyMgr.getValue("TankSpeed"));//定义tank每次移动的距离
     private boolean moving  = true;//设定tank的状态
     private TankFrame tf ;//引用TankFrame，使自己创建出来的子弹对象能够绘制出来
-    public static final int tank_width = ResourceMgr.tankD.getWidth();
-    public static final int tank_height = ResourceMgr.tankD.getHeight();
+    public static final int tank_width = 50;
+    public static final int tank_height = 50;
     private boolean isAlive = true;
     private Random random = new Random();
     private Group group = Group.BAD;
@@ -25,7 +26,7 @@ public class Tank {
     //如果传入到fire方法里面，每次调用，都需要new，因此，应该把每个攻击策略都改写成单例模式
     AttackStrategy as;
 
-    public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
+    public RectTank(int x, int y, Dir dir,TankFrame tf,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -38,7 +39,7 @@ public class Tank {
 
         if(this.group == Group.GOOD){
             try {
-                as = (RoundAttackStrategy)Class.forName(PropertyMgr.getValue("GoodTankAS")).newInstance();
+                as = (ContinuousAttack)Class.forName(PropertyMgr.getValue("RectGoodTankAS")).newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -51,7 +52,6 @@ public class Tank {
         }
 
     }
-
     public TankFrame getTf() {
         return tf;
     }
@@ -97,64 +97,46 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        if(!isAlive){
-            tf.getTanks().remove(this);
-        }
+        if (!isAlive)
+            tf.tanks.remove(this);
 
-
-        //用图片代替tank
-        switch (dir){
-            case UP:
-                g.drawImage(ResourceMgr.tankU,x,y,null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.tankD,x,y,null);
-                break;
-            case LEFT:
-                g.drawImage(ResourceMgr.tankL,x,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.tankR,x,y,null);
-                break;
-            default:
-                break;
-        }
-
-        //抽象一个新的方法来控制tank的移动
+        Color c = g.getColor();
+        g.setColor(group == Group.GOOD ? Color.RED : Color.BLUE);
+        g.fillRect(x, y,tank_width, tank_height);
+        g.setColor(c);
         move();
     }
 
     private void move() {
 
-        if(!moving) return;
-        switch (dir){
+        if (!moving)
+            return;
+
+        switch (dir) {
             case LEFT:
                 x -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
                 break;
             case UP:
                 y -= SPEED;
                 break;
+            case RIGHT:
+                x += SPEED;
+                break;
             case DOWN:
                 y += SPEED;
                 break;
-            default:
-                break;
         }
 
-
-
-        if(this.group == Group.BAD && random.nextInt(100)>95)
+        if (this.group == Group.BAD && random.nextInt(100) > 95)
             this.fire();
-        if(this.group == Group.BAD&&random.nextInt(100)>95)
+
+        if (this.group == Group.BAD && random.nextInt(100) > 95)
             randomDir();
 
         boundsCheck();
-
-        rect.x = x;
-        rect.y = y;
+        // update rect
+        rect.x = this.x;
+        rect.y = this.y;
 
     }
 
@@ -176,5 +158,6 @@ public class Tank {
     public void fire() {
         as.fire(this);
     }
+
 
 }

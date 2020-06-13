@@ -1,4 +1,4 @@
-package com.tank.attackpattern;
+package com.tank.attackstrategy;
 
 public interface AttackStrategy<T> {
 

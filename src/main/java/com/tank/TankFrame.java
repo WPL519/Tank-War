@@ -1,5 +1,14 @@
 package com.tank;
 
+import com.sun.deploy.net.MessageHeader;
+import com.tank.abstractcomonent.BaseBullet;
+import com.tank.abstractcomonent.BaseExplode;
+import com.tank.abstractcomonent.BaseTank;
+import com.tank.abstractfactory.GameFactory;
+import com.tank.abstractfactory.ImageFactory;
+import com.tank.abstractfactory.RectFactory;
+import com.tank.componentimpl.ImageTank;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -11,15 +20,27 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-    final int initMyTankXLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankXLoc"));
-    final int initMyTankYLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankYLoc"));
-    static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.getValue("GameWidth"));
-    static final int GAME_HEIGHT = Integer.parseInt(PropertyMgr.getValue("GameHight"));
-    List<Bullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
-    List<Tank> tanks = new ArrayList<>();
-    List<Explode> explodes = new ArrayList<>();
+    public final int initMyTankXLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankXLoc"));
+    public final int initMyTankYLoc = Integer.parseInt(PropertyMgr.getValue("initMyTankYLoc"));
+    public static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.getValue("GameWidth"));
+    public static final int GAME_HEIGHT = Integer.parseInt(PropertyMgr.getValue("GameHight"));
 
-    Tank myTank = new Tank(initMyTankXLoc,initMyTankYLoc,Dir.DOWN,this,Group.GOOD);
+    public List<BaseBullet> bullets = new ArrayList<>();//子弹飞出窗口，不消除就会出现内存泄露问题
+    public List<BaseTank> tanks = new ArrayList<>();
+    public List<BaseExplode> explodes = new ArrayList<>();
+
+    //public GameFactory gameFactory = new ImageFactory();
+    public GameFactory gameFactory = null;
+
+    {
+        try {
+            gameFactory = (GameFactory) Class.forName(PropertyMgr.getValue("GameSceneMode")).newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    BaseTank myTank =  gameFactory.createTank(initMyTankXLoc,initMyTankYLoc,Dir.DOWN,this,Group.GOOD);
 
 
 
@@ -40,17 +61,7 @@ public class TankFrame extends Frame {
         });
     }
 
-    public List<Bullet> getBullets() {
-        return bullets;
-    }
 
-    public List<Explode> getExplodes() {
-        return explodes;
-    }
-
-    public List<Tank> getTanks() {
-        return tanks;
-    }
 
     Image offScreenImage = null;
     //解决对象移动时的闪烁问题（游戏中的双缓冲概念） ，update方法会在paint方法之前调用，系统劫用画笔g，先在内存中画出整张背景图
